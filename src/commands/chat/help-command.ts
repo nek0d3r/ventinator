@@ -3,7 +3,7 @@ import {
     ApplicationCommandType,
     RESTPostAPIChatInputApplicationCommandsJSONBody,
 } from 'discord-api-types/v10';
-import { CommandInteraction, MessageEmbed, PermissionString } from 'discord.js';
+import { CommandInteraction, EmbedBuilder, Interaction, PermissionsString } from 'discord.js';
 
 import { EventData } from '../../models/internal-models.js';
 import { Lang } from '../../services/index.js';
@@ -37,11 +37,12 @@ export class HelpCommand implements Command {
         ],
     };
     public deferType = CommandDeferType.PUBLIC;
-    public requireClientPerms: PermissionString[] = [];
-    public async execute(intr: CommandInteraction, data: EventData): Promise<void> {
+    public requireClientPerms: PermissionsString[] = [];
+    public async execute(intr: Interaction, data: EventData): Promise<void> {
+        if (!intr.isChatInputCommand()) return;
         let option = intr.options.getString(Lang.getCom('arguments.option'));
 
-        let embed: MessageEmbed;
+        let embed: EmbedBuilder;
         switch (option) {
             case 'commands': {
                 embed = Lang.getEmbed('displayEmbeds.commands', data.lang());

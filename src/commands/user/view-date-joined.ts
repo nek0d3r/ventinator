@@ -2,7 +2,7 @@ import {
     ApplicationCommandType,
     RESTPostAPIContextMenuApplicationCommandsJSONBody,
 } from 'discord-api-types/v10';
-import { DMChannel, PermissionString, UserContextMenuInteraction } from 'discord.js';
+import { DMChannel, PermissionsString, Interaction } from 'discord.js';
 import { RateLimiter } from 'discord.js-rate-limiter';
 import { DateTime } from 'luxon';
 
@@ -20,9 +20,10 @@ export class ViewDateJoined implements Command {
     };
     public cooldown = new RateLimiter(1, 5000);
     public deferType = CommandDeferType.PUBLIC;
-    public requireClientPerms: PermissionString[] = [];
+    public requireClientPerms: PermissionsString[] = [];
 
-    public async execute(intr: UserContextMenuInteraction, data: EventData): Promise<void> {
+    public async execute(intr: Interaction, data: EventData): Promise<void> {
+        if (!intr.isUserContextMenuCommand()) return;
         let joinDate: Date;
         if (!(intr.channel instanceof DMChannel)) {
             let member = await intr.guild.members.fetch(intr.targetUser.id);

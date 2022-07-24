@@ -1,5 +1,5 @@
 import { REST } from '@discordjs/rest';
-import { Options } from 'discord.js';
+import { GatewayIntentBits, Options } from 'discord.js';
 import { createRequire } from 'node:module';
 
 import { Button } from './buttons/index.js';
@@ -30,11 +30,17 @@ let Logs = require('../lang/logs.json');
 async function start(): Promise<void> {
     // Client
     let client = new CustomClient({
-        intents: Config.client.intents,
+        intents: [
+            GatewayIntentBits.Guilds,
+            GatewayIntentBits.GuildMessages,
+            GatewayIntentBits.GuildMessageReactions,
+            GatewayIntentBits.DirectMessages,
+            GatewayIntentBits.DirectMessageReactions
+        ],
         partials: Config.client.partials,
         makeCache: Options.cacheWithLimits({
             // Keep default caching behavior
-            ...Options.defaultMakeCacheSettings,
+            ...Options.DefaultMakeCacheSettings,
             // Override specific options from config
             ...Config.client.caches,
         }),

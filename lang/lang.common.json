@@ -18,10 +18,10 @@
         "option": "option"
     },
     "colors": {
-        "default": "#0099ff",
-        "success": "#00ff83",
-        "warning": "#ffcc66",
-        "error": "#ff4a4a"
+        "default": 39423,
+        "success": 65411,
+        "warning": 16764006,
+        "error": 16730698
     },
     "links": {
         "author": "https://github.com/",

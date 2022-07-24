@@ -3,7 +3,7 @@ import {
     ApplicationCommandType,
     RESTPostAPIChatInputApplicationCommandsJSONBody,
 } from 'discord-api-types/v10';
-import djs, { CommandInteraction, MessageEmbed, PermissionString } from 'discord.js';
+import djs, { CommandInteraction, EmbedBuilder, Interaction, PermissionsString } from 'discord.js';
 import fileSize from 'filesize';
 import { createRequire } from 'node:module';
 import os from 'node:os';
@@ -51,12 +51,13 @@ export class InfoCommand implements Command {
         ],
     };
     public deferType = CommandDeferType.PUBLIC;
-    public requireClientPerms: PermissionString[] = [];
+    public requireClientPerms: PermissionsString[] = [];
 
-    public async execute(intr: CommandInteraction, data: EventData): Promise<void> {
+    public async execute(intr: Interaction, data: EventData): Promise<void> {
+        if (!intr.isChatInputCommand()) return;
         let option = intr.options.getString(Lang.getCom('arguments.option'));
 
-        let embed: MessageEmbed;
+        let embed: EmbedBuilder;
         switch (option) {
             case 'about': {
                 embed = Lang.getEmbed('displayEmbeds.about', data.lang());
@@ -65,7 +66,7 @@ export class InfoCommand implements Command {
             case 'translate': {
                 embed = Lang.getEmbed('displayEmbeds.translate', data.lang());
                 for (let langCode of Object.values(LangCode)) {
-                    embed.addField(Language.displayName(langCode), Language.translators(langCode));
+                    embed.addFields([{ name: Language.displayName(langCode), value: Language.translators(langCode)}]);
                 }
                 break;
             }

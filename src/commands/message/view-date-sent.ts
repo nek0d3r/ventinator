@@ -2,7 +2,7 @@ import {
     ApplicationCommandType,
     RESTPostAPIContextMenuApplicationCommandsJSONBody,
 } from 'discord-api-types/v10';
-import { Message, MessageContextMenuInteraction, PermissionString } from 'discord.js';
+import { Message, Interaction, PermissionsString } from 'discord.js';
 import { RateLimiter } from 'discord.js-rate-limiter';
 import { DateTime } from 'luxon';
 
@@ -20,9 +20,10 @@ export class ViewDateSent implements Command {
     };
     public cooldown = new RateLimiter(1, 5000);
     public deferType = CommandDeferType.PUBLIC;
-    public requireClientPerms: PermissionString[] = [];
+    public requireClientPerms: PermissionsString[] = [];
 
-    public async execute(intr: MessageContextMenuInteraction, data: EventData): Promise<void> {
+    public async execute(intr: Interaction, data: EventData): Promise<void> {
+        if (!intr.isMessageContextMenuCommand()) return;
         await InteractionUtils.send(
             intr,
             Lang.getEmbed('displayEmbeds.viewDateSent', data.lang(), {

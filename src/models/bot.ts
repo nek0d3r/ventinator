@@ -1,15 +1,15 @@
+import { RateLimitData } from '@discordjs/rest';
 import {
-    BaseCommandInteraction,
     ButtonInteraction,
     Client,
     Constants,
+    Events,
     Guild,
     Interaction,
     Message,
     MessageReaction,
     PartialMessageReaction,
     PartialUser,
-    RateLimitData,
     User,
 } from 'discord.js';
 import { createRequire } from 'node:module';
@@ -51,24 +51,24 @@ export class Bot {
     }
 
     private registerListeners(): void {
-        this.client.on(Constants.Events.CLIENT_READY, () => this.onReady());
+        this.client.on(Events.ClientReady, () => this.onReady());
         this.client.on(
-            Constants.Events.SHARD_READY,
+            Events.ShardReady,
             (shardId: number, unavailableGuilds: Set<string>) =>
                 this.onShardReady(shardId, unavailableGuilds)
         );
-        this.client.on(Constants.Events.GUILD_CREATE, (guild: Guild) => this.onGuildJoin(guild));
-        this.client.on(Constants.Events.GUILD_DELETE, (guild: Guild) => this.onGuildLeave(guild));
-        this.client.on(Constants.Events.MESSAGE_CREATE, (msg: Message) => this.onMessage(msg));
-        this.client.on(Constants.Events.INTERACTION_CREATE, (intr: Interaction) =>
+        this.client.on(Events.GuildCreate, (guild: Guild) => this.onGuildJoin(guild));
+        this.client.on(Events.GuildDelete, (guild: Guild) => this.onGuildLeave(guild));
+        this.client.on(Events.MessageCreate, (msg: Message) => this.onMessage(msg));
+        this.client.on(Events.InteractionCreate, (intr: Interaction) =>
             this.onInteraction(intr)
         );
         this.client.on(
-            Constants.Events.MESSAGE_REACTION_ADD,
+            Events.MessageReactionAdd,
             (messageReaction: MessageReaction | PartialMessageReaction, user: User | PartialUser) =>
                 this.onReaction(messageReaction, user)
         );
-        this.client.on(Constants.Events.RATE_LIMIT, (rateLimitData: RateLimitData) =>
+        this.client.rest.on('rateLimited', (rateLimitData: RateLimitData) =>
             this.onRateLimit(rateLimitData)
         );
     }
@@ -150,13 +150,13 @@ export class Bot {
             return;
         }
 
-        if (intr instanceof BaseCommandInteraction) {
+        if (intr.isChatInputCommand()) {
             try {
                 await this.commandHandler.process(intr);
             } catch (error) {
                 Logger.error(Logs.error.command, error);
             }
-        } else if (intr instanceof ButtonInteraction) {
+        } else if (intr.isButton()) {
             try {
                 await this.buttonHandler.process(intr, intr.message as Message);
             } catch (error) {
@@ -198,7 +198,7 @@ export class Bot {
     }
 
     private async onRateLimit(rateLimitData: RateLimitData): Promise<void> {
-        if (rateLimitData.timeout >= Config.logging.rateLimit.minTimeout * 1000) {
+        if (rateLimitData.timeToReset >= Config.logging.rateLimit.minTimeout * 1000) {
             Logger.error(Logs.error.apiRateLimit, rateLimitData);
         }
     }

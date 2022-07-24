@@ -1,6 +1,6 @@
 import { RESTJSONErrorCodes as DiscordApiErrors } from 'discord-api-types/v9';
 import {
-    AnyChannel,
+    Channel,
     Client,
     DiscordAPIError,
     Guild,
@@ -31,7 +31,7 @@ export class ClientUtils {
         } catch (error) {
             if (
                 error instanceof DiscordAPIError &&
-                [DiscordApiErrors.UnknownGuild].includes(error.code)
+                [DiscordApiErrors.UnknownGuild].includes(+error.code)
             ) {
                 return;
             } else {
@@ -40,7 +40,7 @@ export class ClientUtils {
         }
     }
 
-    public static async getChannel(client: Client, discordId: string): Promise<AnyChannel> {
+    public static async getChannel(client: Client, discordId: string): Promise<Channel> {
         discordId = RegexUtils.discordId(discordId);
         if (!discordId) {
             return;
@@ -51,7 +51,7 @@ export class ClientUtils {
         } catch (error) {
             if (
                 error instanceof DiscordAPIError &&
-                [DiscordApiErrors.UnknownChannel].includes(error.code)
+                [DiscordApiErrors.UnknownChannel].includes(+error.code)
             ) {
                 return;
             } else {
@@ -71,7 +71,7 @@ export class ClientUtils {
         } catch (error) {
             if (
                 error instanceof DiscordAPIError &&
-                [DiscordApiErrors.UnknownUser].includes(error.code)
+                [DiscordApiErrors.UnknownUser].includes(+error.code)
             ) {
                 return;
             } else {
@@ -98,7 +98,7 @@ export class ClientUtils {
         } catch (error) {
             if (
                 error instanceof DiscordAPIError &&
-                [DiscordApiErrors.UnknownMember, DiscordApiErrors.UnknownUser].includes(error.code)
+                [DiscordApiErrors.UnknownMember, DiscordApiErrors.UnknownUser].includes(+error.code)
             ) {
                 return;
             } else {
@@ -121,7 +121,7 @@ export class ClientUtils {
         } catch (error) {
             if (
                 error instanceof DiscordAPIError &&
-                [DiscordApiErrors.UnknownRole].includes(error.code)
+                [DiscordApiErrors.UnknownRole].includes(+error.code)
             ) {
                 return;
             } else {
@@ -153,7 +153,7 @@ export class ClientUtils {
         } catch (error) {
             if (
                 error instanceof DiscordAPIError &&
-                [DiscordApiErrors.UnknownChannel].includes(error.code)
+                [DiscordApiErrors.UnknownChannel].includes(+error.code)
             ) {
                 return;
             } else {
@@ -187,7 +187,7 @@ export class ClientUtils {
         } catch (error) {
             if (
                 error instanceof DiscordAPIError &&
-                [DiscordApiErrors.UnknownChannel].includes(error.code)
+                [DiscordApiErrors.UnknownChannel].includes(+error.code)
             ) {
                 return;
             } else {
