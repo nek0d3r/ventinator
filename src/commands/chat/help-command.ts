@@ -3,7 +3,7 @@ import {
     ApplicationCommandType,
     RESTPostAPIChatInputApplicationCommandsJSONBody,
 } from 'discord-api-types/v10';
-import { CommandInteraction, EmbedBuilder, Interaction, PermissionsString } from 'discord.js';
+import { EmbedBuilder, Interaction, PermissionsString } from 'discord.js';
 
 import { EventData } from '../../models/internal-models.js';
 import { Lang } from '../../services/index.js';

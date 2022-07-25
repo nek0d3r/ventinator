@@ -19,7 +19,8 @@
                 "title": "{{COM:bot.name}} - Commands",
                 "description": [
                     "**/{{COM:chatCommands.test}}** - {{REF:commandDescs.test}}",
-                    "**/{{COM:chatCommands.info}}** - {{REF:commandDescs.info}}"
+                    "**/{{COM:chatCommands.info}}** - {{REF:commandDescs.info}}",
+                    "**/{{COM:chatCommands.vent}}** - {{REF:commandDescs.vent}}"
                 ],
                 "fields": [
                     {
@@ -182,7 +183,8 @@
             "info": "View bot info.",
             "link": "Get links to invite, support, etc.",
             "test": "Run the test command.",
-            "translate": "View translation info."
+            "translate": "View translation info.",
+            "vent": "Create a vent post"
         },
         "lists": {
             "languageItem": "**{{LANGUAGE_NAME}}** (`{{LANGUAGE_KEYWORD}}`)"

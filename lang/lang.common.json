@@ -6,7 +6,8 @@
     "chatCommands": {
         "help": "help",
         "info": "info",
-        "test": "test"
+        "test": "test",
+        "vent": "vent"
     },
     "userCommands": {
         "viewDateJoined": "View Date Joined"
@@ -15,7 +16,8 @@
         "viewDateSent": "View Date Sent"
     },
     "arguments": {
-        "option": "option"
+        "option": "option",
+        "message": "message"
     },
     "colors": {
         "default": 39423,

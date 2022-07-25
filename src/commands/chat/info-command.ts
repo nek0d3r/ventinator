@@ -3,7 +3,7 @@ import {
     ApplicationCommandType,
     RESTPostAPIChatInputApplicationCommandsJSONBody,
 } from 'discord-api-types/v10';
-import djs, { CommandInteraction, EmbedBuilder, Interaction, PermissionsString } from 'discord.js';
+import djs, { EmbedBuilder, Interaction, PermissionsString } from 'discord.js';
 import fileSize from 'filesize';
 import { createRequire } from 'node:module';
 import os from 'node:os';

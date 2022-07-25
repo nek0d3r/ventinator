@@ -3,7 +3,7 @@ import { GatewayIntentBits, Options } from 'discord.js';
 import { createRequire } from 'node:module';
 
 import { Button } from './buttons/index.js';
-import { HelpCommand, InfoCommand, TestCommand } from './commands/chat/index.js';
+import { HelpCommand, InfoCommand, TestCommand, VentCommand } from './commands/chat/index.js';
 import { Command } from './commands/index.js';
 import { ViewDateSent } from './commands/message/index.js';
 import { ViewDateJoined } from './commands/user/index.js';
@@ -52,6 +52,7 @@ async function start(): Promise<void> {
         new HelpCommand(),
         new InfoCommand(),
         new TestCommand(),
+        new VentCommand(),
         // User Context Commands
         new ViewDateJoined(),
         // Message Context Commands

@@ -2,7 +2,7 @@ import {
     ApplicationCommandType,
     RESTPostAPIChatInputApplicationCommandsJSONBody,
 } from 'discord-api-types/v10';
-import { CommandInteraction, Interaction, PermissionsString } from 'discord.js';
+import { Interaction, PermissionsString } from 'discord.js';
 import { RateLimiter } from 'discord.js-rate-limiter';
 
 import { EventData } from '../../models/internal-models.js';
