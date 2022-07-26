@@ -16,6 +16,7 @@ import { createRequire } from 'node:module';
 
 import {
     ButtonHandler,
+    SelectMenuHandler,
     CommandHandler,
     GuildJoinHandler,
     GuildLeaveHandler,
@@ -41,6 +42,7 @@ export class Bot {
         private messageHandler: MessageHandler,
         private commandHandler: CommandHandler,
         private buttonHandler: ButtonHandler,
+        private selectMenuHandler: SelectMenuHandler,
         private reactionHandler: ReactionHandler,
         private jobService: JobService
     ) {}
@@ -161,6 +163,12 @@ export class Bot {
                 await this.buttonHandler.process(intr, intr.message as Message);
             } catch (error) {
                 Logger.error(Logs.error.button, error);
+            }
+        } else if (intr.isSelectMenu()) {
+            try {
+                await this.selectMenuHandler.process(intr, intr.message as Message);
+            } catch (error) {
+                Logger.error(Logs.error.select, error);
             }
         }
     }

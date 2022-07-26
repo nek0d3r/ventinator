@@ -56,6 +56,7 @@ export class InteractionUtils {
     public static async send(
         intr: Interaction | MessageComponentInteraction,
         content: string | EmbedBuilder | InteractionReplyOptions,
+        components: any[] = [],
         hidden: boolean = false
     ): Promise<Message> {
         try {
@@ -70,12 +71,14 @@ export class InteractionUtils {
                 return (await intr.followUp({
                     ...options,
                     ephemeral: hidden,
+                    components: [...components]
                 })) as Message;
             } else {
                 return (await intr.reply({
                     ...options,
                     ephemeral: hidden,
                     fetchReply: true,
+                    components: [...components]
                 })) as Message;
             }
         } catch (error) {

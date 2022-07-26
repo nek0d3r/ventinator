@@ -2,7 +2,8 @@ import { REST } from '@discordjs/rest';
 import { GatewayIntentBits, Options } from 'discord.js';
 import { createRequire } from 'node:module';
 
-import { Button } from './buttons/index.js';
+import { Button } from './actions/index.js';
+import { SelectMenu } from './actions/select-menu.js';
 import { HelpCommand, InfoCommand, TestCommand, VentCommand } from './commands/chat/index.js';
 import { Command } from './commands/index.js';
 import { ViewDateSent } from './commands/message/index.js';
@@ -14,6 +15,7 @@ import {
     GuildLeaveHandler,
     MessageHandler,
     ReactionHandler,
+    SelectMenuHandler,
     TriggerHandler,
 } from './events/index.js';
 import { CustomClient } from './extensions/index.js';
@@ -32,6 +34,7 @@ async function start(): Promise<void> {
     let client = new CustomClient({
         intents: [
             GatewayIntentBits.Guilds,
+            GatewayIntentBits.GuildMembers,
             GatewayIntentBits.GuildMessages,
             GatewayIntentBits.GuildMessageReactions,
             GatewayIntentBits.DirectMessages,
@@ -64,6 +67,11 @@ async function start(): Promise<void> {
     let buttons: Button[] = [
         // TODO: Add new buttons here
     ];
+    
+    // Select Menus
+    let selectMenus: SelectMenu[] = [
+        // TODO: Add new select menus here
+    ];
 
     // Reactions
     let reactions: Reaction[] = [
@@ -80,6 +88,7 @@ async function start(): Promise<void> {
     let guildLeaveHandler = new GuildLeaveHandler();
     let commandHandler = new CommandHandler(commands);
     let buttonHandler = new ButtonHandler(buttons);
+    let selectMenuHandler = new SelectMenuHandler(selectMenus);
     let triggerHandler = new TriggerHandler(triggers);
     let messageHandler = new MessageHandler(triggerHandler);
     let reactionHandler = new ReactionHandler(reactions);
@@ -98,6 +107,7 @@ async function start(): Promise<void> {
         messageHandler,
         commandHandler,
         buttonHandler,
+        selectMenuHandler,
         reactionHandler,
         new JobService(jobs)
     );

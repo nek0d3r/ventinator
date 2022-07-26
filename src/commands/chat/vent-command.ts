@@ -3,7 +3,7 @@ import {
     ApplicationCommandType,
     RESTPostAPIChatInputApplicationCommandsJSONBody,
 } from 'discord-api-types/v10';
-import djs, { EmbedBuilder, Interaction, PermissionsString } from 'discord.js';
+import djs, { ActionRowBuilder, Collection, EmbedBuilder, Guild, Interaction, PermissionsString, SelectMenuBuilder } from 'discord.js';
 import fileSize from 'filesize';
 import { createRequire } from 'node:module';
 import os from 'node:os';
@@ -44,11 +44,35 @@ export class VentCommand implements Command {
         
         // TODO: Response for non-DM usage
         if (!!intr.guildId) return;
-
-        console.log(intr);
         
-        let message = intr.options.getString(Lang.getCom('arguments.message'));
-
-        await InteractionUtils.send(intr, message);
+        let mutualGuilds = [];
+        await intr.client.guilds.fetch().then(async guilds => {
+            guilds.each(async guild => {
+                await intr.client.guilds.fetch(guild.id).then(async guildDetails => {
+                    await guildDetails.members.fetch(intr.user.id).then(member => {
+                        if(!!member) {
+                            //console.log(`Mutual server: ${guild.name} (${guild.id})`);
+                            mutualGuilds.push({
+                                label: guild.name,
+                                value: guild.id
+                            });
+                        }
+                    }).finally(async () => {
+                        await InteractionUtils.send(intr, new EmbedBuilder({
+                            title: 'Vent Post',
+                            description: intr.options.getString(Lang.getCom('arguments.message')),
+                            color: +Lang.getCom('colors.default')
+                        }),
+                        [
+                            new ActionRowBuilder().addComponents(new SelectMenuBuilder()
+                                .setCustomId('select')
+                                .setPlaceholder('Select server to vent to')
+                                .addOptions(mutualGuilds)
+                            )
+                        ]);
+                    })
+                })
+            })
+        }).catch(Logger.error);
     }
 }
